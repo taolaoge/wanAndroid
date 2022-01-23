@@ -77,6 +77,7 @@ class MainActivity : AppCompatActivity() {
             //将currentFragment添加到我们的一个占位的容器内
             //第一个参数为容器，第二个参数为我们想要添加的fragment
             transaction.add(R.id.lin_lay_fragment, currentFragment)
+
         }
         transaction.show(currentFragment)
         transaction.commit()
