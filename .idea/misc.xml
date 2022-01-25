@@ -5,13 +5,17 @@
       <map>
         <entry key="..\:/Users/bangbangp/AndroidStudioProjects/wanAndroid/app/src/main/res/drawable/ic_menu.xml" value="0.27870370370370373" />
         <entry key="..\:/Users/bangbangp/AndroidStudioProjects/wanAndroid/app/src/main/res/drawable/nav_bottom_selector.xml" value="0.2722222222222222" />
+        <entry key="..\:/Users/bangbangp/AndroidStudioProjects/wanAndroid/app/src/main/res/drawable/shape_btn_login.xml" value="0.2564814814814815" />
+        <entry key="..\:/Users/bangbangp/AndroidStudioProjects/wanAndroid/app/src/main/res/layout/activity_login.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/bangbangp/AndroidStudioProjects/wanAndroid/app/src/main/res/layout/activity_main.xml" value="0.27291666666666664" />
+        <entry key="..\:/Users/bangbangp/AndroidStudioProjects/wanAndroid/app/src/main/res/layout/activity_register.xml" value="0.25833333333333336" />
         <entry key="..\:/Users/bangbangp/AndroidStudioProjects/wanAndroid/app/src/main/res/layout/fragment_first.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/bangbangp/AndroidStudioProjects/wanAndroid/app/src/main/res/layout/fragment_item.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/bangbangp/AndroidStudioProjects/wanAndroid/app/src/main/res/layout/fragment_square.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/bangbangp/AndroidStudioProjects/wanAndroid/app/src/main/res/layout/fragment_system.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/bangbangp/AndroidStudioProjects/wanAndroid/app/src/main/res/layout/fragment_wechat.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/bangbangp/AndroidStudioProjects/wanAndroid/app/src/main/res/layout/nav_header.xml" value="0.27291666666666664" />
+        <entry key="..\:/Users/bangbangp/AndroidStudioProjects/wanAndroid/app/src/main/res/layout/square_item.xml" value="0.625" />
         <entry key="..\:/Users/bangbangp/AndroidStudioProjects/wanAndroid/app/src/main/res/menu/nav_bottom_menu.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/bangbangp/AndroidStudioProjects/wanAndroid/app/src/main/res/menu/nav_menu.xml" value="0.27291666666666664" />
       </map>

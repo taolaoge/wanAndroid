@@ -1,19 +1,22 @@
-package com.example.wanandroid
+package com.example.wanandroid.Activity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
+import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.example.wanandroid.Fragments.*
-import com.google.android.material.bottomnavigation.BottomNavigationItemView
+import com.example.wanandroid.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.navigation.NavigationView
+import org.w3c.dom.Text
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(),View.OnClickListener {
     var lastIndex = 0
     lateinit var fragment0: Fragment
     lateinit var fragment1: Fragment
@@ -24,28 +27,60 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        val toolbar: Toolbar = findViewById(R.id.main_toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.let {
             it.setDisplayHomeAsUpEnabled(true)
             it.setHomeAsUpIndicator(R.drawable.ic_menu)
         }
+        initView()
         initData()
         initBottomNavigation()
+        initNavigation()
+    }
+
+    private fun initView() {
+        val navView:NavigationView=findViewById(R.id.navView)
+        val headerLayout=navView.inflateHeaderView(R.layout.nav_header)
+        val tvLogin:TextView=headerLayout.findViewById(R.id.nav_tv_go)
+        tvLogin.setOnClickListener(this)
+    }
+
+    private fun initNavigation() {
+        val navigationView:NavigationView=findViewById(R.id.navView)
+        navigationView.setCheckedItem(R.id.nav_tv_go)
     }
 
     private fun initBottomNavigation() {
+        val title: TextView = findViewById(R.id.toolbar_title)
         val bottomNavigation: BottomNavigationView = findViewById(R.id.bottom_navigation)
+        //设置监听器 切换fragment
         bottomNavigation.setOnNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.bottom_first -> setFragmentPosition(0)
-                R.id.bottom_square -> setFragmentPosition(1)
-                R.id.bottom_wechat -> setFragmentPosition(2)
-                R.id.bottom_system -> setFragmentPosition(3)
-                R.id.bottom_item -> setFragmentPosition(4)
+                R.id.bottom_first -> {
+                    setFragmentPosition(0)
+                    title.text = "玩Android"
+                }
+                R.id.bottom_square -> {
+                    setFragmentPosition(1)
+                    title.text = "广场"
+                }
+                R.id.bottom_wechat -> {
+                    setFragmentPosition(2)
+                    title.text = "公众号"
+                }
+                R.id.bottom_system -> {
+                    setFragmentPosition(3)
+                    title.text = "体系"
+                }
+                R.id.bottom_item -> {
+                    setFragmentPosition(4)
+                    title.text = "项目"
+                }
             }
             true
         })
+
 
     }
 
@@ -55,23 +90,29 @@ class MainActivity : AppCompatActivity() {
         fragment2 = WechatFragment()
         fragment3 = SystemFragment()
         fragment4 = ItemFragment()
-        fragments.add(fragment0)
-        fragments.add(fragment1)
-        fragments.add(fragment2)
-        fragments.add(fragment3)
-        fragments.add(fragment4)
-        setFragmentPosition(0)
+        fragments?.run {
+            add(fragment0)
+            add(fragment1)
+            add(fragment2)
+            add(fragment3)
+            add(fragment4)
+        }
+            setFragmentPosition(0)
+            val title: TextView = findViewById(R.id.toolbar_title)
+            title.text = "玩Android"
+
     }
 
     private fun setFragmentPosition(position: Int) {
         val fragmentManager = supportFragmentManager
         val transaction = fragmentManager.beginTransaction()
-        val currentFragment=fragments[position]
-        val lastFragment=fragments[lastIndex]
-        lastIndex=position
+        val currentFragment = fragments[position]
+        val lastFragment = fragments[lastIndex]
+        lastIndex = position
         //隐藏上一个fragment
         transaction.hide(lastFragment)
-        //这个if语句什么意思呢？
+        //如果这个currentFragment没有被添加进去，则开一个新的transaction先移除这个Fragment
+        //再原来的transaction内加入这个fragment
         if (!currentFragment.isAdded) {
             supportFragmentManager.beginTransaction().remove(currentFragment).commit()
             //将currentFragment添加到我们的一个占位的容器内
@@ -89,5 +130,14 @@ class MainActivity : AppCompatActivity() {
             android.R.id.home -> drawerLayout.openDrawer(GravityCompat.START)
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onClick(v: View) {
+        when(v.id){
+            R.id.nav_tv_go->{
+                val intent=Intent(this,LoginActivity::class.java)
+                startActivity(intent)
+            }
+        }
     }
 }
