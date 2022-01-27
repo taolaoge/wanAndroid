@@ -26,8 +26,8 @@ import java.io.IOException
  * date : 2022/1/23
  */
 class SquareFragment : Fragment() {
-    lateinit var layoutManager1:RecyclerView.LayoutManager
-    lateinit var adapter1: SquareArticleAdapter
+    private lateinit var layoutManager1:RecyclerView.LayoutManager
+    private lateinit var adapter1: SquareArticleAdapter
     var curPage = 0
     lateinit var view2: View
     lateinit var rv: RecyclerView
@@ -48,7 +48,6 @@ class SquareFragment : Fragment() {
 
     private fun freshRecycleView() {
         var isSliding: Boolean = false
-
         rv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
@@ -112,6 +111,9 @@ class SquareFragment : Fragment() {
             layoutManager1 = LinearLayoutManager(context)
             adapter1 = SquareArticleAdapter(squareList)
             rv.run {
+
+
+
                 layoutManager = layoutManager1
                 addItemDecoration(
                     DividerItemDecoration(
