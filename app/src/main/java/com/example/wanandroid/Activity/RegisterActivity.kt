@@ -4,13 +4,18 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
+import com.example.wanandroid.Bean.LoginResponse
+import com.example.wanandroid.Bean.RegisterResponse
 import com.example.wanandroid.R
 import com.example.wanandroid.Utils.HttpUtil
+import com.google.gson.Gson
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.FormBody
@@ -72,9 +77,27 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
 
                 override fun onResponse(call: Call, response: Response) {
                     val responseData = response.body?.string()
+                    val gson=Gson()
+                    val registerResponse=gson.fromJson(responseData,RegisterResponse::class.java)
+                    val message=registerResponse.errorMsg
+                    if (message!! == ""){
+                        val intent=Intent(this@RegisterActivity,LoginActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    }else{
+                        runOnUiThread{
+                            Toast.makeText(this@RegisterActivity,registerResponse.errorMsg,Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 }
 
             })
 
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> finish()
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

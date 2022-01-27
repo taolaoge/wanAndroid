@@ -1,4 +1,4 @@
-package com.example.wanandroid.Gson
+package com.example.wanandroid.Bean
 
 /**
  * description ： TODO:类的作用

@@ -16,14 +16,15 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import org.w3c.dom.Text
 
-class MainActivity : AppCompatActivity(),View.OnClickListener {
+class MainActivity : AppCompatActivity(), View.OnClickListener {
     var lastIndex = 0
+    lateinit var mTvUsername:TextView
     lateinit var fragment0: Fragment
     lateinit var fragment1: Fragment
     lateinit var fragment2: Fragment
     lateinit var fragment3: Fragment
     lateinit var fragment4: Fragment
-    var fragments = arrayListOf<Fragment>()
+    private var fragments = arrayListOf<Fragment>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -39,15 +40,16 @@ class MainActivity : AppCompatActivity(),View.OnClickListener {
         initNavigation()
     }
 
+
     private fun initView() {
-        val navView:NavigationView=findViewById(R.id.navView)
-        val headerLayout=navView.inflateHeaderView(R.layout.nav_header)
-        val tvLogin:TextView=headerLayout.findViewById(R.id.nav_tv_go)
-        tvLogin.setOnClickListener(this)
+        val navView: NavigationView = findViewById(R.id.navView)
+        val headerLayout = navView.inflateHeaderView(R.layout.nav_header)
+        mTvUsername= headerLayout.findViewById(R.id.nav_tv_go)
+        mTvUsername.setOnClickListener(this)
     }
 
     private fun initNavigation() {
-        val navigationView:NavigationView=findViewById(R.id.navView)
+        val navigationView: NavigationView = findViewById(R.id.navView)
         navigationView.setCheckedItem(R.id.nav_tv_go)
     }
 
@@ -97,9 +99,9 @@ class MainActivity : AppCompatActivity(),View.OnClickListener {
             add(fragment3)
             add(fragment4)
         }
-            setFragmentPosition(0)
-            val title: TextView = findViewById(R.id.toolbar_title)
-            title.text = "玩Android"
+        setFragmentPosition(0)
+        val title: TextView = findViewById(R.id.toolbar_title)
+        title.text = "玩Android"
 
     }
 
@@ -133,11 +135,26 @@ class MainActivity : AppCompatActivity(),View.OnClickListener {
     }
 
     override fun onClick(v: View) {
-        when(v.id){
-            R.id.nav_tv_go->{
-                val intent=Intent(this,LoginActivity::class.java)
-                startActivity(intent)
+        when (v.id) {
+            R.id.nav_tv_go -> {
+                //判断是否登录成功
+                if(mTvUsername.text=="去登陆") {
+                    val intent = Intent(this, LoginActivity::class.java)
+                    //销毁登陆活动时，携带用户的username返回
+                    startActivityForResult(intent, 1)
+                }
             }
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when(requestCode){
+            1->{
+                val backData=data?.getStringExtra("login_back")?:"去登陆"
+                mTvUsername.text=backData
+            }
+        }
+
     }
 }
