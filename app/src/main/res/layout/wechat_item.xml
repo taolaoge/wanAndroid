@@ -4,7 +4,7 @@
     android:layout_height="100dp">
 
     <TextView
-        android:id="@+id/square_rv_author"
+        android:id="@+id/wechat_rv_author"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
@@ -19,23 +19,32 @@
         android:textColor="@color/black"
         android:textSize="15dp"
         android:layout_marginStart="5dp"
-        android:layout_below="@id/square_rv_author"
-        android:id="@+id/square_rv_title"/>
+        android:layout_below="@id/wechat_rv_author"
+        android:id="@+id/wechat_rv_title"/>
     <TextView
-        android:id="@+id/square_position"
+        android:id="@+id/wechat_wechat"
+        android:text="公众号/"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:layout_alignParentBottom="true"
         android:textSize="13dp"
-        android:text="广场Tab/广场"
+        android:layout_marginBottom="5dp"/>
+    <TextView
+        android:layout_toRightOf="@id/wechat_wechat"
+        android:id="@+id/wechat_position_author"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_alignParentBottom="true"
+        android:textSize="13dp"
         android:layout_marginBottom="5dp"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="15dp"
         android:layout_marginBottom="5dp"
-        android:id="@+id/square_rv_time"
+        android:id="@+id/wechat_rv_time"
         android:layout_alignParentRight="true"
         android:layout_marginRight="5dp"/>
     <Button

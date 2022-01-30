@@ -14,14 +14,9 @@ import java.util.*
  * date : 2022/1/24
  */
 object TimeUtil {
-
-
-    fun timestampToTime(timestamp:Long):String{
-       return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-           SimpleDateFormat("YY-MM-DD-hh-mm-ss").format(timestamp)
-       } else {
-           TODO("VERSION.SDK_INT < N")
-       }
-
+    fun timeStampToTime(timeStamp:Long):String{
+        val sdf=SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+        val sd=sdf.format(timeStamp)
+        return sd
     }
 }

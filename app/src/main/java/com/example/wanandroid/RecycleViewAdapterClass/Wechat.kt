@@ -1,11 +1,11 @@
 package com.example.wanandroid.RecycleViewAdapterClass
 
-import android.icu.text.CaseMap
+import java.text.FieldPosition
 
 /**
  * description ： TODO:类的作用
  * author :Li Jian
  * email : 1678921845@qq.com
- * date : 2022/1/24
+ * date : 2022/1/30
  */
-class Square(val author:String, val title:String,val time:String,val address:String)
+class Wechat (val author:String, val title:String,val time:String,val address:String)

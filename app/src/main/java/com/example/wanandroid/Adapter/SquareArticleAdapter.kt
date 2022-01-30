@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wanandroid.R
 import com.example.wanandroid.RecycleViewAdapterClass.Square
@@ -26,7 +27,12 @@ class SquareArticleAdapter (private val articleList:List<Square>)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view=LayoutInflater.from(parent.context)
             .inflate(R.layout.square_item,parent,false)
-        return ViewHolder(view)
+        val viewHolder=ViewHolder(view)
+        //为recycleView的item注册点击事件
+        viewHolder.itemView.setOnClickListener{
+
+        }
+        return viewHolder
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

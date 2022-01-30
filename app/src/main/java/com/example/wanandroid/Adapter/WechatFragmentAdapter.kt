@@ -23,5 +23,4 @@ class WechatFragmentAdapter(
     override fun createFragment(position: Int): Fragment {
         return fragments[position]
     }
-
 }

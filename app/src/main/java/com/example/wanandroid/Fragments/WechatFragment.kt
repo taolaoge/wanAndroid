@@ -71,11 +71,10 @@ class WechatFragment : Fragment() {
         )
         val adapter1 = WechatFragmentAdapter(this, fragments)
         viewPager.adapter = adapter1
-        TabLayoutMediator(tabLayout,viewPager
+        TabLayoutMediator(
+            tabLayout, viewPager
         ) { tab, position ->
             tab.text = data[position]
         }.attach()
     }
-
-
 }

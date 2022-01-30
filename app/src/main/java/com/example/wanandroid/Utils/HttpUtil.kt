@@ -1,5 +1,6 @@
 package com.example.wanandroid.Utils
 
+import okhttp3.Cookie
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody
@@ -11,9 +12,9 @@ import okhttp3.RequestBody
  * date : 2022/1/24
  */
 object HttpUtil {
-    fun sendOkHttpGetRequest(address:String, callback: okhttp3.Callback){
+    fun sendOkHttpGetRequest(address:String,cookie:String, callback: okhttp3.Callback){
         val client= OkHttpClient()
-        val request= Request.Builder().url(address).build()
+        val request= Request.Builder().url(address).addHeader("Cookie",cookie).build()
         client.newCall(request).enqueue(callback)
     }
 

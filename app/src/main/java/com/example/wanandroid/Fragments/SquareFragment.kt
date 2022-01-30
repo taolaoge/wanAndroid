@@ -13,6 +13,7 @@ import com.example.wanandroid.Bean.ArticleResponse
 import com.example.wanandroid.R
 import com.example.wanandroid.RecycleViewAdapterClass.Square
 import com.example.wanandroid.Utils.HttpUtil
+import com.example.wanandroid.Utils.TimeUtil
 import com.google.gson.Gson
 import okhttp3.Call
 import okhttp3.Callback
@@ -26,7 +27,7 @@ import java.io.IOException
  * date : 2022/1/23
  */
 class SquareFragment : Fragment() {
-    private lateinit var layoutManager1:RecyclerView.LayoutManager
+    private lateinit var layoutManager1: RecyclerView.LayoutManager
     private lateinit var adapter1: SquareArticleAdapter
     var curPage = 0
     lateinit var view2: View
@@ -42,6 +43,7 @@ class SquareFragment : Fragment() {
         //必须在网络请求完成后更新ui，因为网络请求是异步的
         //如果在主线程更新，即有可能网络请求数据还未请求到就刷新ui
         initData()
+        initRecycleView()
         freshRecycleView()
         return view2
     }
@@ -51,6 +53,8 @@ class SquareFragment : Fragment() {
         rv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
+                //dx为横向滚动 dy为竖向滚动
+                //如果为竖向滚动,则isSliding属性为true，横向滚动则为false
                 isSliding = dy > 0
             }
 
@@ -58,6 +62,7 @@ class SquareFragment : Fragment() {
                 super.onScrollStateChanged(recyclerView, newState)
                 //manager必须为LinearLayoutManager
                 val manager: LinearLayoutManager = rv.layoutManager as LinearLayoutManager
+                //newState是RecycleView的状态 如果它的状态为没有滚动时
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     //获取最后一个完全显示的ItemPosition
                     val lastVisibleItem = manager.findLastCompletelyVisibleItemPosition()
@@ -72,7 +77,7 @@ class SquareFragment : Fragment() {
     }
 
     private fun loadMoreData() {
-        HttpUtil.sendOkHttpGetRequest("https://wanandroid.com/user_article/list/$curPage/json",
+        HttpUtil.sendOkHttpGetRequest("https://wanandroid.com/user_article/list/$curPage/json", "",
             object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
 
@@ -89,7 +94,7 @@ class SquareFragment : Fragment() {
 
 
     private fun initData() {
-        HttpUtil.sendOkHttpGetRequest("https://wanandroid.com/user_article/list/$curPage/json",
+        HttpUtil.sendOkHttpGetRequest("https://wanandroid.com/user_article/list/$curPage/json", "",
             object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
 
@@ -106,14 +111,10 @@ class SquareFragment : Fragment() {
 
 
     private fun initRecycleView() {
-        //子线程更新ui，先要获取activity才能调用runOnUiThread
         activity?.runOnUiThread {
             layoutManager1 = LinearLayoutManager(context)
             adapter1 = SquareArticleAdapter(squareList)
             rv.run {
-
-
-
                 layoutManager = layoutManager1
                 addItemDecoration(
                     DividerItemDecoration(
@@ -122,40 +123,43 @@ class SquareFragment : Fragment() {
                 )
                 adapter = adapter1
             }
-
         }
     }
 
     private fun recycleViewData(responseData: String?) {
         val gson = Gson()
         val articleResponse = gson.fromJson(responseData, ArticleResponse::class.java)
-        val size = articleResponse.data.total % 10 + 9
+        val size = articleResponse.data.datas!!.size-1
         //初次请求数据和其他请求数据项目数量不同
         if (curPage == 1) {
             for (i in 0..size) {
+                val address = articleResponse.data.datas!![i].link
                 val author = articleResponse.data.datas!![i].author
                 val shareUser = articleResponse.data.datas!![i].shareUser
                 val title = articleResponse.data.datas!![i].title
                 val publishTime = articleResponse.data.datas!![i].publishTime
+                val time = TimeUtil.timeStampToTime(publishTime)
                 if (author == "") {
                     //添加新的Square
-                    squareList.add(Square(shareUser, title, "0"))
+                    squareList.add(Square(shareUser, title, time, address))
                 } else {
-                    squareList.add(Square(author, title, "0"))
+                    squareList.add(Square(author, title, time, address))
                 }
             }
             initRecycleView()
         } else {
-            for (i in 0..19) {
+            for (i in 0..size) {
+                val address = articleResponse.data.datas!![i].link
                 val author = articleResponse.data.datas!![i].author
                 val shareUser = articleResponse.data.datas!![i].shareUser
                 val title = articleResponse.data.datas!![i].title
                 val publishTime = articleResponse.data.datas!![i].publishTime
+                val time = TimeUtil.timeStampToTime(publishTime)
                 if (author == "") {
                     //添加新的Square
-                    squareList.add(Square(shareUser, title, "0"))
+                    squareList.add(Square(shareUser, title, time, address))
                 } else {
-                    squareList.add(Square(author, title, "0"))
+                    squareList.add(Square(author, title, time, address))
                 }
             }
             //不能重新创建一个adapter，这样会使得recycleView自动滚动到顶部，而应该使用原来的adapter
@@ -164,9 +168,9 @@ class SquareFragment : Fragment() {
     }
 
     private fun freshRecycleViewData() {
-        activity?.runOnUiThread{
+        activity?.runOnUiThread {
             //在原来的adapter里刷新数据即可
-            rv.adapter!!.notifyDataSetChanged()
+            rv.adapter?.notifyDataSetChanged()
         }
     }
 }
