@@ -73,7 +73,7 @@ class SquareFragment : Fragment() {
                     val lastVisibleItem = manager.findLastCompletelyVisibleItemPosition()
                     val totalItem = manager.itemCount
                     if (lastVisibleItem == (totalItem - 1) && !isLoading) {
-                        isLoading=true
+                        isLoading = true
                         loadMoreData()
                     }
                 }
