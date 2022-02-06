@@ -14,5 +14,4 @@ data class Data(
     var curPage: Int,
     var over: Boolean,
     var datas: List<Datas>?
-
 )

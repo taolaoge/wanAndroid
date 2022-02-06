@@ -126,13 +126,13 @@ class SquareFragment : Fragment() {
             val author = articleResponse.data.datas!![i].author
             val shareUser = articleResponse.data.datas!![i].shareUser
             val title = articleResponse.data.datas!![i].title
+            val niceData=articleResponse.data.datas!![i].niceDate
             val publishTime = articleResponse.data.datas!![i].publishTime
-            val time = TimeUtil.timeStampToTime(publishTime)
             if (author == "") {
                 //添加新的Square
-                squareList.add(Square(shareUser, title, time, address))
+                squareList.add(Square(shareUser, title, niceData, address))
             } else {
-                squareList.add(Square(author, title, time, address))
+                squareList.add(Square(author, title, niceData, address))
             }
         }
         //不能重新创建一个adapter，这样会使得recycleView自动滚动到顶部，而应该使用原来的adapter

@@ -17,9 +17,9 @@ import com.example.wanandroid.`class`.Square
 class SquareArticleAdapter (private val articleList:List<Square>)
     :RecyclerView.Adapter<SquareArticleAdapter.ViewHolder>(){
     inner class ViewHolder(view:View):RecyclerView.ViewHolder(view){
-        val author:TextView=view.findViewById(R.id.square_rv_author)
-        val title:TextView=view.findViewById(R.id.square_rv_title)
-        val time:TextView=view.findViewById(R.id.square_rv_time)
+        val mTvAuthor:TextView=view.findViewById(R.id.square_rv_author)
+        val mTvTitle:TextView=view.findViewById(R.id.square_rv_title)
+        val mTvTime:TextView=view.findViewById(R.id.square_rv_time)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -35,9 +35,9 @@ class SquareArticleAdapter (private val articleList:List<Square>)
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val square=articleList[position]
-        holder.author.text=square.author
-        holder.title.text=square.title
-        holder.time.text=square.time
+        holder.mTvAuthor.text=square.author
+        holder.mTvTitle.text=square.title
+        holder.mTvTime.text=square.time
     }
 
     override fun getItemCount(): Int {
