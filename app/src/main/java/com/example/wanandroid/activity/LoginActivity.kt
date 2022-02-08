@@ -1,5 +1,6 @@
 package com.example.wanandroid.activity
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -85,7 +86,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                     val loginResponse = gson.fromJson(responseData, LoginResponse::class.java)
                     val message = loginResponse.errorMsg
                     if (message == "") {
-                        //设置用户的个人信息
+                        //设置用户的个人信息,拼接完毕cookie并转为String类型
                         setMyselfMessage(strBuilder.toString(), loginResponse.data.username)
                     } else {
                         runOnUiThread {
@@ -121,14 +122,24 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                     intent1.putExtra("level", level)
                     intent1.putExtra("rank", rank)
                     intent1.putExtra("login_back", username)
-                    //回调onActivityResult
+                    setSharedPreference(header,username)
+                    //回调onActivityResult,首次登录通知主页面更新ui
                     setResult(RESULT_OK, intent1)
                     finish()
                 }
             })
     }
 
+    private fun setSharedPreference(cookie: String,username: String) {
+        //获取sp的editor对象
+        val editor = getSharedPreferences("cookie", Context.MODE_PRIVATE).edit()
+        editor.putString("cookie", cookie)
+        editor.putString("username",username)
+        editor.apply()
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        //点击toolbar的返回按钮 finish此活动
         when (item.itemId) {
             android.R.id.home -> finish()
         }

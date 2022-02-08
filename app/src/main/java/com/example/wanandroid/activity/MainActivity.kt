@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
@@ -14,6 +15,7 @@ import androidx.fragment.app.Fragment
 import com.example.wanandroid.bean.LoginResponse
 import com.example.wanandroid.fragments.*
 import com.example.wanandroid.R
+import com.example.wanandroid.bean.MyselfResponse
 import com.example.wanandroid.utils.HttpUtil
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
@@ -23,9 +25,16 @@ import okhttp3.Callback
 import okhttp3.FormBody
 import okhttp3.Response
 import java.io.IOException
+import java.net.HttpCookie
+import android.widget.Toast
+
+
+
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
     var lastIndex = 0
+    var username=""
+    private var mExitTime = 0L
     lateinit var navView: NavigationView
     lateinit var headerLayout: View
     lateinit var mTvLevel: TextView
@@ -46,11 +55,88 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             it.setDisplayHomeAsUpEnabled(true)
             it.setHomeAsUpIndicator(R.drawable.ic_menu)
         }
-        initSharedPreferences()
+        //cookie实现自动登录
+        initLogin()
         initView()
         initData()
         initBottomNavigation()
         initNavigation()
+        //为DrawerLayout中menu设置点击事件
+        initNavClick()
+    }
+
+    private fun initLogin() {
+        val prefs = getSharedPreferences("cookie", Context.MODE_PRIVATE)
+        val cookie: String = prefs.getString("cookie", "") ?: ""
+        HttpUtil.sendOkHttpGetRequest(
+            "https://wanandroid.com//user/lg/userinfo/json",
+            cookie,
+            object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    val responseData = response.body?.string()
+                    val gson = Gson()
+                    val loginResponse = gson.fromJson(responseData, MyselfResponse::class.java)
+                    val errorMsg=loginResponse.errorMsg
+                    if (errorMsg==""){
+                        val level = loginResponse.data.coinInfo.level
+                        val rank = loginResponse.data.coinInfo.rank
+                        runOnUiThread {
+                            val prefs=getSharedPreferences("cookie",Context.MODE_PRIVATE)
+                            val username=prefs.getString("username","")
+                            mTvUsername.text = username
+                            mTvLevel.text = "等级:$level"
+                            mTvRank.text = "排名:$rank"
+                        }
+                    }else{
+                        runOnUiThread {
+                            mTvUsername.text ="去登录"
+                            mTvLevel.text = "等级:"
+                            mTvRank.text = "排名:"
+                        }
+                    }
+                }
+
+            })
+    }
+
+    private fun initNavClick() {
+        navView.setNavigationItemSelectedListener(NavigationView.OnNavigationItemSelectedListener() {
+            when (it.itemId) {
+                R.id.navGrade -> {
+                    val intent = Intent(this, MyGradeActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.navCollect -> {
+                    val intent = Intent(this, MyStarActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.navShare -> {
+                    val intent = Intent(this, MyShareActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.navGoOut->{
+                    val prefs=getSharedPreferences("cookie",Context.MODE_PRIVATE).edit()
+                    prefs.clear()
+                    prefs.apply()
+                    //回调,重新设置用户数据
+                    initLogin()
+                    val drawerLayout:DrawerLayout=findViewById(R.id.drawerlayout)
+                    drawerLayout.closeDrawers()
+                    true
+                }
+
+                else -> {
+                    true
+                }
+            }
+        })
     }
 
 
@@ -61,35 +147,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         mTvLevel = headerLayout.findViewById(R.id.nav_lever)
         mTvRank = headerLayout.findViewById(R.id.nav_rank)
         mTvUsername.setOnClickListener(this)
-    }
-
-    private fun initSharedPreferences() {
-        val prefs = getSharedPreferences("login", Context.MODE_PRIVATE)
-        val username: String = prefs.getString("name", "") ?: ""
-        val password: String = prefs.getString("password", "") ?: ""
-        val requestBody = FormBody.Builder()
-            .add("username", username)
-            .add("password", password)
-            .build()
-        HttpUtil.sendOkHttpPostRequest(
-            "https://www.wanandroid.com/user/login",
-            requestBody,
-            object : Callback {
-                override fun onFailure(call: Call, e: IOException) {
-
-                }
-
-                override fun onResponse(call: Call, response: Response) {
-                    val responseData = response.body?.string()
-                    val gson = Gson()
-                    val loginResponse = gson.fromJson(responseData, LoginResponse::class.java)
-                    val message = loginResponse.errorMsg
-                    if (message == "") {
-                        mTvUsername.text = username
-                    }
-                }
-            })
-
     }
 
     private fun initNavigation() {
@@ -182,7 +239,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         when (v.id) {
             R.id.nav_tv_go -> {
                 //判断是否已经登录
-                if (mTvUsername.text == "去登陆") {
+                if (mTvUsername.text == "去登录") {
                     val intent = Intent(this, LoginActivity::class.java)
                     //销毁登陆活动时，携带用户的username返回
                     startActivityForResult(intent, 1)
@@ -191,20 +248,35 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    override fun onActivityResult(
+        requestCode: Int,
+        resultCode: Int,
+        data: Intent?
+    ) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             1 -> {
                 val rank = data!!.getStringExtra("rank")
-                val level = data.getIntExtra("level",0)
-                val backData = data.getStringExtra("login_back")
-                mTvUsername.text = backData
+                val level = data.getIntExtra("level", 0)
+                username = data.getStringExtra("login_back")?:""
+                mTvUsername.text = username
                 mTvLevel.text = "等级:$level"
                 mTvRank.text = "排名:$rank"
             }
         }
-
     }
-
-
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            /*
+            * 当当前时间大于上次按返回键的时间 2 秒时
+            */
+            if (System.currentTimeMillis() - mExitTime > 2000) {
+                Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show()
+                mExitTime = System.currentTimeMillis()
+                return false
+            }
+        }
+        return super.onKeyDown(keyCode, event)
+    }
 }
+

@@ -155,7 +155,7 @@ class FirstFragment() : Fragment() {
             val author = articleResponse.data.datas!![i].author
             val shareUser = articleResponse.data.datas!![i].shareUser
             val title = articleResponse.data.datas!![i].title
-            val superName=articleResponse.data.datas!![i].superChapterName
+            val superName=articleResponse.data.datas!![i].superChapterName+" /"
             val name=articleResponse.data.datas!![i].chapterName
             val niceDate=articleResponse.data.datas!![i].niceDate
             if (author == "") {
