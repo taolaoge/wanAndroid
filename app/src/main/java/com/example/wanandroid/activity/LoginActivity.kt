@@ -68,7 +68,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
             .build()
         HttpUtil.sendOkHttpPostRequest(
             "https://www.wanandroid.com/user/login",
-            requestBody,
+            requestBody,"",
             object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
 

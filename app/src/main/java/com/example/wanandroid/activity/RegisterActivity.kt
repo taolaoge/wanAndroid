@@ -67,7 +67,7 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
             .build()
         HttpUtil.sendOkHttpPostRequest(
             "https://www.wanandroid.com/user/register",
-            requestBody,
+            requestBody,"",
             object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
 

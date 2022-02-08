@@ -17,9 +17,9 @@ object HttpUtil {
         client.newCall(request).enqueue(callback)
     }
 
-    fun sendOkHttpPostRequest(address: String, requestBody: RequestBody, callback:okhttp3.Callback){
+    fun sendOkHttpPostRequest(address: String, requestBody: RequestBody,cookie:String, callback:okhttp3.Callback){
         val client=OkHttpClient()
-        val request=Request.Builder().url(address).post(requestBody).build()
+        val request=Request.Builder().url(address).addHeader("Cookie",cookie).post(requestBody).build()
         client.newCall(request).enqueue(callback)
     }
 }

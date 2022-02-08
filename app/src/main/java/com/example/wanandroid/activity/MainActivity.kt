@@ -107,28 +107,52 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         navView.setNavigationItemSelectedListener(NavigationView.OnNavigationItemSelectedListener() {
             when (it.itemId) {
                 R.id.navGrade -> {
-                    val intent = Intent(this, MyGradeActivity::class.java)
-                    startActivity(intent)
+                    if(mTvUsername.text=="去登录"){
+                        Toast.makeText(this,"请先登录",Toast.LENGTH_SHORT).show()
+                        val intent=Intent(this,LoginActivity::class.java)
+                        startActivity(intent)
+                    }else{
+                        val intent = Intent(this, MyGradeActivity::class.java)
+                        startActivity(intent)
+                    }
                     true
                 }
                 R.id.navCollect -> {
-                    val intent = Intent(this, MyStarActivity::class.java)
-                    startActivity(intent)
+                    if(mTvUsername.text=="去登录"){
+                        Toast.makeText(this,"请先登录",Toast.LENGTH_SHORT).show()
+                        val intent=Intent(this,LoginActivity::class.java)
+                        startActivity(intent)
+                    }else{
+                        val intent = Intent(this, MyStarActivity::class.java)
+                        startActivity(intent)
+                    }
                     true
                 }
                 R.id.navShare -> {
-                    val intent = Intent(this, MyShareActivity::class.java)
-                    startActivity(intent)
+                    if(mTvUsername.text=="去登录"){
+                        Toast.makeText(this,"请先登录",Toast.LENGTH_SHORT).show()
+                        val intent=Intent(this,LoginActivity::class.java)
+                        startActivity(intent)
+                    }else{
+                        val intent = Intent(this, MyShareActivity::class.java)
+                        startActivity(intent)
+                    }
                     true
                 }
                 R.id.navGoOut->{
-                    val prefs=getSharedPreferences("cookie",Context.MODE_PRIVATE).edit()
-                    prefs.clear()
-                    prefs.apply()
-                    //回调,重新设置用户数据
-                    initLogin()
-                    val drawerLayout:DrawerLayout=findViewById(R.id.drawerlayout)
-                    drawerLayout.closeDrawers()
+                    if(mTvUsername.text=="去登录"){
+                        Toast.makeText(this,"请先登录",Toast.LENGTH_SHORT).show()
+                        val intent=Intent(this,LoginActivity::class.java)
+                        startActivity(intent)
+                    }else {
+                        val prefs = getSharedPreferences("cookie", Context.MODE_PRIVATE).edit()
+                        prefs.clear()
+                        prefs.apply()
+                        //回调,重新设置用户数据
+                        initLogin()
+                        val drawerLayout: DrawerLayout = findViewById(R.id.drawerlayout)
+                        drawerLayout.closeDrawers()
+                    }
                     true
                 }
 
@@ -256,9 +280,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             1 -> {
-                val rank = data!!.getStringExtra("rank")
-                val level = data.getIntExtra("level", 0)
-                username = data.getStringExtra("login_back")?:""
+                val rank = data?.getStringExtra("rank")?:""
+                val level = data?.getIntExtra("level", 0)?:""
+                username = data?.getStringExtra("login_back")?:"去登录"
                 mTvUsername.text = username
                 mTvLevel.text = "等级:$level"
                 mTvRank.text = "排名:$rank"

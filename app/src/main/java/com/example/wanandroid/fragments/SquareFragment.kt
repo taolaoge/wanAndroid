@@ -1,5 +1,6 @@
 package com.example.wanandroid.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -102,9 +103,11 @@ class SquareFragment : Fragment() {
 
 
     private fun initRecycleView() {
+        val prefs=activity?.getSharedPreferences("cookie",Context.MODE_PRIVATE)
+        val cookie=prefs?.getString("cookie","")?:""
         activity?.runOnUiThread {
             layoutManager1 = LinearLayoutManager(context)
-            adapter1 = SquareArticleAdapter(squareList)
+            adapter1 = SquareArticleAdapter(squareList,cookie)
             rv.run {
                 layoutManager = layoutManager1
                 addItemDecoration(
@@ -127,12 +130,12 @@ class SquareFragment : Fragment() {
             val shareUser = articleResponse.data.datas!![i].shareUser
             val title = articleResponse.data.datas!![i].title
             val niceData=articleResponse.data.datas!![i].niceDate
-            val publishTime = articleResponse.data.datas!![i].publishTime
+            val id=articleResponse.data.datas!![i].id
             if (author == "") {
                 //添加新的Square
-                squareList.add(Square(shareUser, title, niceData, address))
+                squareList.add(Square(shareUser, title, niceData, address,id))
             } else {
-                squareList.add(Square(author, title, niceData, address))
+                squareList.add(Square(author, title, niceData, address,id))
             }
         }
         //不能重新创建一个adapter，这样会使得recycleView自动滚动到顶部，而应该使用原来的adapter
