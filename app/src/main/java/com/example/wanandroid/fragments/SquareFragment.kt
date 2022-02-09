@@ -33,7 +33,6 @@ class SquareFragment : Fragment() {
     private lateinit var adapter1: SquareArticleAdapter
     var curPage = 0
     var isLoading = false
-    lateinit var mCheckBox: CheckBox
     lateinit var view2: View
     lateinit var rv: RecyclerView
     private val squareList = ArrayList<Square>()
