@@ -59,10 +59,20 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         initLogin()
         initView()
         initData()
+        initUi()
         initBottomNavigation()
         initNavigation()
         //为DrawerLayout中menu设置点击事件
         initNavClick()
+    }
+
+    private fun initUi() {
+        val rank = intent?.getStringExtra("rank")?:""
+        val level = intent?.getIntExtra("level", 0)?:""
+        username = intent?.getStringExtra("login_back")?:"去登录"
+        mTvUsername.text = username
+        mTvLevel.text = "等级:$level"
+        mTvRank.text = "排名:$rank"
     }
 
     private fun initLogin() {
@@ -150,6 +160,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                         prefs.apply()
                         //回调,重新设置用户数据
                         initLogin()
+                        finish()
+                        val intent=Intent(this,MainActivity::class.java)
+                        startActivity(intent)
                         val drawerLayout: DrawerLayout = findViewById(R.id.drawerlayout)
                         drawerLayout.closeDrawers()
                     }
@@ -266,29 +279,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 if (mTvUsername.text == "去登录") {
                     val intent = Intent(this, LoginActivity::class.java)
                     //销毁登陆活动时，携带用户的username返回
-                    startActivityForResult(intent, 1)
+                    startActivity(intent)
+                    finish()
                 }
             }
         }
     }
 
-    override fun onActivityResult(
-        requestCode: Int,
-        resultCode: Int,
-        data: Intent?
-    ) {
-        super.onActivityResult(requestCode, resultCode, data)
-        when (requestCode) {
-            1 -> {
-                val rank = data?.getStringExtra("rank")?:""
-                val level = data?.getIntExtra("level", 0)?:""
-                username = data?.getStringExtra("login_back")?:"去登录"
-                mTvUsername.text = username
-                mTvLevel.text = "等级:$level"
-                mTvRank.text = "排名:$rank"
-            }
-        }
-    }
+
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             /*

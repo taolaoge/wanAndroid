@@ -69,6 +69,7 @@ class WechatArticleAdapter(private val articleList: List<Wechat>,private val coo
             //当CheckBox被点击时，此时它的位置
             val pos: Int = buttonView.tag as Int
             if (cookie == "") {
+                holder.mCheckBox.isChecked=false
                 Toast.makeText(parent1.context, "请先登录", Toast.LENGTH_SHORT).show()
             } else {
                 if (isChecked) {
@@ -112,6 +113,7 @@ class WechatArticleAdapter(private val articleList: List<Wechat>,private val coo
                         })
                 }
             }
+        }
             //adapter加载数据时，这个位置的item取出它的值，如果无，则返回false，即CheckBox不会被选中
             //这一步是因为rv的复用导致可能CheckBox也会复用
             holder.mCheckBox.isChecked = mCheckBoxStates.get(position, false)
@@ -119,7 +121,6 @@ class WechatArticleAdapter(private val articleList: List<Wechat>,private val coo
             if (wechat.collect) {
                 holder.mCheckBox.isChecked = true
             }
-        }
     }
 
     override fun getItemCount(): Int {

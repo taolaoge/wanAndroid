@@ -38,7 +38,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun initView() {
-        intent1 = Intent()
+        intent1 = Intent(this,MainActivity::class.java)
         val mTvGoRegister: TextView = findViewById(R.id.login_tv_go_register)
         mTvGoRegister.setOnClickListener(this)
         val mBtnLogin: Button = findViewById(R.id.login_btn_login)
@@ -124,8 +124,8 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                     intent1.putExtra("login_back", username)
                     setSharedPreference(header,username)
                     //回调onActivityResult,首次登录通知主页面更新ui
-                    setResult(RESULT_OK, intent1)
                     finish()
+                    startActivity(intent1)
                 }
             })
     }
