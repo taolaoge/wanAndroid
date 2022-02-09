@@ -83,9 +83,11 @@ class FirstFragment() : Fragment() {
     }
 
     private fun initRecycleView() {
+        val prefs=activity?.getSharedPreferences("cookie",Context.MODE_PRIVATE)
+        val cookie=prefs?.getString("cookie","")?:""
         activity?.runOnUiThread {
             layoutManager1 = LinearLayoutManager(context)
-            adapter1 = HomeArticleAdapter(homeList)
+            adapter1 = HomeArticleAdapter(homeList,cookie)
             recycleView.run {
                 layoutManager = layoutManager1
                 addItemDecoration(
@@ -129,7 +131,9 @@ class FirstFragment() : Fragment() {
     }
 
     private fun loadMoreData() {
-        HttpUtil.sendOkHttpGetRequest("https://www.wanandroid.com/article/list/$curPage/json", "",
+        val prefs=activity?.getSharedPreferences("cookie",Context.MODE_PRIVATE)
+        val cookie=prefs?.getString("cookie","")?:""
+        HttpUtil.sendOkHttpGetRequest("https://www.wanandroid.com/article/list/$curPage/json", cookie,
             object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
                     isLoading = false
@@ -155,14 +159,25 @@ class FirstFragment() : Fragment() {
             val author = articleResponse.data.datas!![i].author
             val shareUser = articleResponse.data.datas!![i].shareUser
             val title = articleResponse.data.datas!![i].title
-            val superName=articleResponse.data.datas!![i].superChapterName+" /"
-            val name=articleResponse.data.datas!![i].chapterName
-            val niceDate=articleResponse.data.datas!![i].niceDate
+            val superName = articleResponse.data.datas!![i].superChapterName + " /"
+            val name = articleResponse.data.datas!![i].chapterName
+            val niceDate = articleResponse.data.datas!![i].niceDate
+            val id = articleResponse.data.datas!![i].id
+            val collect = articleResponse.data.datas!![i].collect
             if (author == "") {
                 //添加新的Square
-                homeList.add(Home(shareUser, superName, name, title,niceDate,address))
+                homeList.add(
+                    Home(
+                        shareUser,
+                        superName,
+                        name,
+                        title,
+                        niceDate,
+                        address, id, collect
+                    )
+                )
             } else {
-                homeList.add(Home(author, superName, name, title,niceDate,address))
+                homeList.add(Home(author, superName, name, title, niceDate, address, id, collect))
             }
         }
         //不能重新创建一个adapter，这样会使得recycleView自动滚动到顶部，而应该使用原来的adapter

@@ -6,4 +6,4 @@ package com.example.wanandroid.`class`
  * email : 1678921845@qq.com
  * date : 2022/1/24
  */
-class Square(val author:String, val title:String,val time:String,val address:String,val id:Int)
+class Square(val author:String, val title:String,val time:String,val address:String,val id:Int,val collect:Boolean)

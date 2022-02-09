@@ -24,6 +24,8 @@ data class HomeArticleResponse(
         var datas: List<Datas>?
     ):Serializable{
         data class Datas(
+            var id:Int,
+            val collect:Boolean,
             var author:String,
             var shareUser:String,
             var link:String,

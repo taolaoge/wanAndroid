@@ -2,6 +2,7 @@ package com.example.wanandroid.adapter
 
 import android.os.Parcel
 import android.os.Parcelable
+import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,10 +28,10 @@ import java.io.IOException
  * date : 2022/1/24
  */
 class SquareArticleAdapter(private val articleList: List<Square>, private val cookie: String) :
-    RecyclerView.Adapter<SquareArticleAdapter.ViewHolder>(),
-    CompoundButton.OnCheckedChangeListener {
-    var id: Int = 0
+    RecyclerView.Adapter<SquareArticleAdapter.ViewHolder>(){
+    lateinit var viewHolder:SquareArticleAdapter.ViewHolder
     lateinit var parent1: ViewGroup
+    var mCheckBoxStates=SparseBooleanArray()
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val mTvAuthor: TextView = view.findViewById(R.id.square_rv_author)
@@ -42,9 +43,8 @@ class SquareArticleAdapter(private val articleList: List<Square>, private val co
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.square_item, parent, false)
-        val viewHolder = ViewHolder(view)
+        viewHolder = ViewHolder(view)
         //为recycleView的item(任意控件)注册点击事件
-        viewHolder.mCheckBox.setOnCheckedChangeListener(this)
         parent1 = parent
         return viewHolder
     }
@@ -55,19 +55,15 @@ class SquareArticleAdapter(private val articleList: List<Square>, private val co
         holder.mTvAuthor.text = square.author
         holder.mTvTitle.text = square.title
         holder.mTvTime.text = square.time
-        holder.mCheckBox.isChecked=true
-        id=square.id
-    }
-
-    override fun getItemCount(): Int {
-        return articleList.size
-    }
-
-    override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
-        if (isChecked) {
-            if (cookie == "") {
-                Toast.makeText(parent1.context, "请登录", Toast.LENGTH_SHORT).show()
-            } else {
+        val id=square.id
+        if(square.collect){
+            holder.mCheckBox.isChecked=true
+        }
+        holder.mCheckBox.tag=position
+        holder.mCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
+            val pos:Int=buttonView.tag as Int
+            if (isChecked){
+                mCheckBoxStates.put(pos,true)
                 val requestBody = FormBody.Builder()
                     .build()
                 HttpUtil.sendOkHttpPostRequest("https://www.wanandroid.com/lg/collect/$id/json",
@@ -79,11 +75,19 @@ class SquareArticleAdapter(private val articleList: List<Square>, private val co
                         }
 
                         override fun onResponse(call: Call, response: Response) {
-
+                            //收藏成功后的逻辑
                         }
 
                     })
+            }else{
+                mCheckBoxStates.delete(pos)
             }
         }
+        holder.mCheckBox.isChecked=mCheckBoxStates.get(position,false)
     }
+
+    override fun getItemCount(): Int {
+        return articleList.size
+    }
+
 }

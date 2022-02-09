@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,6 +33,7 @@ class SquareFragment : Fragment() {
     private lateinit var adapter1: SquareArticleAdapter
     var curPage = 0
     var isLoading = false
+    lateinit var mCheckBox: CheckBox
     lateinit var view2: View
     lateinit var rv: RecyclerView
     private val squareList = ArrayList<Square>()
@@ -85,7 +87,10 @@ class SquareFragment : Fragment() {
 
 
     private fun loadMoreData() {
-        HttpUtil.sendOkHttpGetRequest("https://wanandroid.com/user_article/list/$curPage/json", "",
+        val prefs = activity?.getSharedPreferences("cookie", Context.MODE_PRIVATE)
+        val cookie = prefs?.getString("cookie", "") ?: ""
+        HttpUtil.sendOkHttpGetRequest("https://wanandroid.com/user_article/list/$curPage/json",
+            cookie,
             object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
                     isLoading = false
@@ -103,11 +108,11 @@ class SquareFragment : Fragment() {
 
 
     private fun initRecycleView() {
-        val prefs=activity?.getSharedPreferences("cookie",Context.MODE_PRIVATE)
-        val cookie=prefs?.getString("cookie","")?:""
+        val prefs = activity?.getSharedPreferences("cookie", Context.MODE_PRIVATE)
+        val cookie = prefs?.getString("cookie", "") ?: ""
         activity?.runOnUiThread {
             layoutManager1 = LinearLayoutManager(context)
-            adapter1 = SquareArticleAdapter(squareList,cookie)
+            adapter1 = SquareArticleAdapter(squareList, cookie)
             rv.run {
                 layoutManager = layoutManager1
                 addItemDecoration(
@@ -129,13 +134,14 @@ class SquareFragment : Fragment() {
             val author = articleResponse.data.datas!![i].author
             val shareUser = articleResponse.data.datas!![i].shareUser
             val title = articleResponse.data.datas!![i].title
-            val niceData=articleResponse.data.datas!![i].niceDate
-            val id=articleResponse.data.datas!![i].id
+            val niceData = articleResponse.data.datas!![i].niceDate
+            val id = articleResponse.data.datas!![i].id
+            val collect = articleResponse.data.datas!![i].collect
             if (author == "") {
                 //添加新的Square
-                squareList.add(Square(shareUser, title, niceData, address,id))
+                squareList.add(Square(shareUser, title, niceData, address, id, collect))
             } else {
-                squareList.add(Square(author, title, niceData, address,id))
+                squareList.add(Square(author, title, niceData, address, id, collect))
             }
         }
         //不能重新创建一个adapter，这样会使得recycleView自动滚动到顶部，而应该使用原来的adapter

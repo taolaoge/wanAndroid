@@ -1,5 +1,6 @@
 package com.example.wanandroid.fragments.wechat
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -86,7 +87,9 @@ class Fragment1:Fragment() {
 
 
     private fun loadMoreData() {
-        HttpUtil.sendOkHttpGetRequest("https://wanandroid.com/wxarticle/list/408/$curPage/json", "",
+        val prefs=activity?.getSharedPreferences("cookie",Context.MODE_PRIVATE)
+        val cookie=prefs?.getString("cookie","")?:""
+        HttpUtil.sendOkHttpGetRequest("https://wanandroid.com/wxarticle/list/408/$curPage/json", cookie,
             object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
                     isLoading = false
@@ -104,9 +107,11 @@ class Fragment1:Fragment() {
 
 
     private fun initRecycleView() {
+        val prefs=activity?.getSharedPreferences("cookie",Context.MODE_PRIVATE)
+        val cookie=prefs?.getString("cookie","")?:""
         activity?.runOnUiThread {
             layoutManager1 = LinearLayoutManager(context)
-            adapter1 = WechatArticleAdapter(wechatList)
+            adapter1 = WechatArticleAdapter(wechatList,cookie)
             rv.run {
                 layoutManager = layoutManager1
                 addItemDecoration(
@@ -129,12 +134,14 @@ class Fragment1:Fragment() {
             val shareUser = articleResponse.data.datas!![i].shareUser
             val title = articleResponse.data.datas!![i].title
             val publishTime = articleResponse.data.datas!![i].publishTime
-            val time = TimeUtil.timeStampToTime(publishTime)
+            val time = articleResponse.data.datas!![i].niceDate
+            val id=articleResponse.data.datas!![i].id
+            val collect=articleResponse.data.datas!![i].collect
             if (author == "") {
                 //添加新的Square
-                wechatList.add(Wechat(shareUser, title, time, address))
+                wechatList.add(Wechat(shareUser, title, time, address,id,collect))
             } else {
-                wechatList.add(Wechat(author, title, time, address))
+                wechatList.add(Wechat(author, title, time, address,id,collect))
             }
         }
         //不能重新创建一个adapter，这样会使得recycleView自动滚动到顶部，而应该使用原来的adapter
