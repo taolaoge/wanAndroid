@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
@@ -144,5 +145,11 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
             android.R.id.home -> finish()
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        val intent=Intent(this,MainActivity::class.java)
+        startActivity(intent)
+        return super.onKeyDown(keyCode, event)
     }
 }

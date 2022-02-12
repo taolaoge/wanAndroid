@@ -121,6 +121,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                         Toast.makeText(this,"请先登录",Toast.LENGTH_SHORT).show()
                         val intent=Intent(this,LoginActivity::class.java)
                         startActivity(intent)
+                        finish()
                     }else{
                         val intent = Intent(this, MyGradeActivity::class.java)
                         startActivity(intent)
@@ -132,6 +133,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                         Toast.makeText(this,"请先登录",Toast.LENGTH_SHORT).show()
                         val intent=Intent(this,LoginActivity::class.java)
                         startActivity(intent)
+                        finish()
                     }else{
                         val intent = Intent(this, MyStarActivity::class.java)
                         startActivity(intent)
@@ -143,6 +145,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                         Toast.makeText(this,"请先登录",Toast.LENGTH_SHORT).show()
                         val intent=Intent(this,LoginActivity::class.java)
                         startActivity(intent)
+                        finish()
                     }else{
                         val intent = Intent(this, MyShareActivity::class.java)
                         startActivity(intent)
@@ -154,6 +157,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                         Toast.makeText(this,"请先登录",Toast.LENGTH_SHORT).show()
                         val intent=Intent(this,LoginActivity::class.java)
                         startActivity(intent)
+                        finish()
                     }else {
                         val prefs = getSharedPreferences("cookie", Context.MODE_PRIVATE).edit()
                         prefs.clear()
