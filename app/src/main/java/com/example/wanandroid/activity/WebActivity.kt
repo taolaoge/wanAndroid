@@ -14,6 +14,7 @@ class WebActivity : AppCompatActivity() {
         val mWebView:WebView=findViewById(R.id.webview)
         mWebView.settings.javaScriptEnabled=true
         mWebView.webViewClient= WebViewClient()
+        mWebView.settings.domStorageEnabled=true
         mWebView.loadUrl(address)
     }
 }

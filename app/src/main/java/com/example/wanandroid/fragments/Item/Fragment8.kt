@@ -139,7 +139,7 @@ class Fragment8 : Fragment() {
             val id=articleResponse.data.datas!![i].id
             val desc=articleResponse.data.datas!![i].desc as String
             val collect=articleResponse.data.datas!![i].collect
-            if (author == "") {
+            if (author != "") {
                 //添加新的Square
                 itemList.add(Item(author,collect,desc, envelopPic,address, time,title,id))
             } else {
