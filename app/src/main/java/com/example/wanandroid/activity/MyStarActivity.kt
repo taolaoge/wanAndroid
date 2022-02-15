@@ -22,6 +22,12 @@ import okhttp3.Callback
 import okhttp3.Response
 import java.io.IOException
 
+/**
+ * description ： 我的收藏
+ * author :Li Jian
+ * email : 1678921845@qq.com
+ * date : 2022/1/24
+ */
 class MyStarActivity : AppCompatActivity() {
     var curPage = 0
     lateinit var rv: RecyclerView

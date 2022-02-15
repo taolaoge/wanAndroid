@@ -20,6 +20,12 @@ import okhttp3.FormBody
 import okhttp3.Response
 import java.io.IOException
 
+/**
+ * description ： 注册
+ * author :Li Jian
+ * email : 1678921845@qq.com
+ * date : 2022/1/24
+ */
 class RegisterActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var mEdUsername: EditText
     lateinit var mEdPassword: EditText

@@ -6,6 +6,12 @@ import android.view.MenuItem
 import androidx.appcompat.widget.Toolbar
 import com.example.wanandroid.R
 
+/**
+ * description ： 我的分享
+ * author :Li Jian
+ * email : 1678921845@qq.com
+ * date : 2022/1/24
+ */
 class MyShareActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

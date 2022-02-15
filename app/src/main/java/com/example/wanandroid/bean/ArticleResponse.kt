@@ -1,7 +1,7 @@
 package com.example.wanandroid.bean
 
 /**
- * description ： TODO:类的作用
+ * description ： 解析json数据
  * author :Li Jian
  * email : 1678921845@qq.com
  * date : 2022/1/24

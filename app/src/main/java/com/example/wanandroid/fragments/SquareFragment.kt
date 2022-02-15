@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,7 +14,6 @@ import com.example.wanandroid.R
 import com.example.wanandroid.adapter.SquareArticleAdapter
 import com.example.wanandroid.`class`.Square
 import com.example.wanandroid.utils.HttpUtil
-import com.example.wanandroid.utils.TimeUtil
 import com.google.gson.Gson
 import okhttp3.Call
 import okhttp3.Callback

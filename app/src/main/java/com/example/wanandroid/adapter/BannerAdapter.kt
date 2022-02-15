@@ -11,7 +11,7 @@ import com.example.wanandroid.`class`.Banner
 import com.example.wanandroid.fragments.FirstFragment
 
 /**
- * description ： TODO:类的作用
+ * description ： 首页banner图适配器
  * author :Li Jian
  * email : 1678921845@qq.com
  * date : 2022/2/5

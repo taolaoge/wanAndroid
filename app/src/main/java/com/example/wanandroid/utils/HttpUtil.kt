@@ -5,7 +5,7 @@ import okhttp3.Request
 import okhttp3.RequestBody
 
 /**
- * description ： TODO:类的作用
+ * description ： 封装okhttp工具类
  * author :Li Jian
  * email : 1678921845@qq.com
  * date : 2022/1/24

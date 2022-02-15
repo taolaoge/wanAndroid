@@ -12,11 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.wanandroid.adapter.WechatArticleAdapter
 import com.example.wanandroid.bean.ArticleResponse
 import com.example.wanandroid.R
-import com.example.wanandroid.`class`.Square
 import com.example.wanandroid.`class`.Wechat
-import com.example.wanandroid.adapter.SquareArticleAdapter
 import com.example.wanandroid.utils.HttpUtil
-import com.example.wanandroid.utils.TimeUtil
 import com.google.gson.Gson
 import okhttp3.Call
 import okhttp3.Callback
