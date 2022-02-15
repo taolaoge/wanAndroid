@@ -94,7 +94,11 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            android.R.id.home -> finish()
+            android.R.id.home -> {
+                val intent=Intent(this,MainActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
         }
         return super.onOptionsItemSelected(item)
     }

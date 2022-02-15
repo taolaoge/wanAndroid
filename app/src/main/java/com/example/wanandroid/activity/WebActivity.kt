@@ -3,6 +3,7 @@ package com.example.wanandroid.activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.webkit.WebView
+import android.webkit.WebViewClient
 import com.example.wanandroid.R
 
 class WebActivity : AppCompatActivity() {
@@ -11,6 +12,8 @@ class WebActivity : AppCompatActivity() {
         setContentView(R.layout.activity_web)
         val address=intent.getStringExtra("address")?:""
         val mWebView:WebView=findViewById(R.id.webview)
+        mWebView.settings.javaScriptEnabled=true
+        mWebView.webViewClient= WebViewClient()
         mWebView.loadUrl(address)
     }
 }

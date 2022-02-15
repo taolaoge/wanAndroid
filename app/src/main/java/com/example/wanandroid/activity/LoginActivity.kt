@@ -142,7 +142,11 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         //点击toolbar的返回按钮 finish此活动
         when (item.itemId) {
-            android.R.id.home -> finish()
+            android.R.id.home -> {
+                val intent=Intent(this,MainActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
         }
         return super.onOptionsItemSelected(item)
     }
